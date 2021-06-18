@@ -1,0 +1,142 @@
+{% extends "layout.html" %}
+
+{% block head %}
+
+
+{% endblock %}
+
+{% block nav %}
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              {% if session.user %}
+              <li class="nav-item active">
+                <a class="nav-link" href="/check">Check Papers <span class="sr-only">(current)</span></a>
+              </li>
+              {% endif %}
+              <li class="nav-item">
+                <a class="nav-link" href="/charts">Charts</a>
+              </li>
+              </ul>
+
+              {% if session.user %}
+              <ul class="nav navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('paper_select.clear_session') }}">Log Out</a>
+              </li>
+              </ul>
+              {% endif %}
+{% endblock %}
+
+
+{% block body %}
+
+{% if data.paper is none %}
+<div class="jumbotron jumbotron-fluid sentence">
+  <div class="container">
+    <h5>Unbelievable!</h5>
+    <h5>No paper is left for you to check!</h5>
+    <h5>Yeah!</h5>
+  </div>
+</div>
+{% else %}
+
+
+<div class="jumbotron jumbotron-fluid sentence">
+  <div class="container">
+        <p class="lead">Hi {{ session.user }}, you're going to check if the following paper falls into our selection criteria.</p>
+        <p class="paper_text">
+            <table class="table table-hover">
+              <thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Title</th>
+                  <td>{{ data.paper.title }} </td>
+                </tr>
+                {% if data.paper.authors %}
+                <tr>
+                  <th scope="row">Authors</th>
+                  <td>{{ data.paper.authors }}</td>
+                </tr>
+                {% endif %}
+                {% if data.paper.abstract %}
+                <tr>
+                  <th scope="row">Abstract</th>
+                  <td>{{ data.paper.abstract }}</td>
+                </tr>
+                {% endif %}
+                {% if data.paper.venue %}
+                <tr>
+                  <th scope="row">Venue</th>
+                  <td>{{ data.paper.venue }}</td>
+                </tr>
+                {% endif %}
+                {% if data.paper.year %}
+                <tr>
+                  <th scope="row">Year</th>
+                  <td>{{ data.paper.year }}</td>
+                </tr>
+                {% endif %}
+                {% if data.paper.doi %}
+                <tr>
+                  <th scope="row">Link</th>
+                  <td><a href="https://doi.org/{{ data.paper.doi }}" target="_blank">https://doi.org/{{ data.paper.doi }}</a></td>
+                </tr>
+                {% endif %}
+                {% if data.paper.source %}
+                <tr>
+                  <th scope="row">Source</th>
+                  <td>{{ data.paper.source }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+  </div>
+</div>
+<div class="jumbotron jumbotron-fluid bottom">
+  <div class="container">
+        <form action="{{ url_for('paper_select.save_result') }}" method="post">
+<!--            <label for="note"><b>Remarks</b> (optional):</label>-->
+<!--            <textarea class="form-control" rows="3" id="note" name="note"></textarea>-->
+            <p class="lead">In case you decide to include this paper, but it does not fit in our inclusion criteria, please state the reason:</p>
+            <textarea class="form-control" rows="3" id="inclusion_note" name="inclusion_note" placeholder="(option)"></textarea>
+            <br>
+            <p class="lead">In case you decide to discard this paper, please choose the reason:</p>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="note_irrelevant" value="Not relevant to software engineering">Not relevant to software engineering
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="note_notpaper" value="Not a paper">Not a paper
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                <input type="checkbox" class="form-check-input" name="note_notopinion" value="Not related to opinion mining">Not related to opinion mining
+              </label>
+            </div>
+            <div class="form-check">
+              <label class="form-check-label">
+                Other reason:
+              </label>
+                <input type="text" name="other_option" class="other_option" value="" placeholder="optional">
+            </div>
+            <br>
+            <input type="hidden" name="paper_id" value="{{ data.paper.id }}">
+            <button type="submit" class="btn btn-success paper_select" name="selection" value="1">Include in SLR</button>
+            <button type="submit" class="btn btn-warning paper_select" name="selection" value="2">Secondary Study</button>
+            <button type="submit" class="btn btn-danger paper_select" name="selection" value="0">Discard</button>
+            <button type="submit" class="btn btn-secondary paper_select" name="selection" value="3">Skip</button>
+        </form>
+  </div>
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
