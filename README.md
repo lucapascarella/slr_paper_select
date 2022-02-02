@@ -43,10 +43,18 @@ We have provided a simple script (``dump_data.py``) and an example data file (``
 To run the application locally, you can execute the following command:
 
 ```
-(venv)$ flask run
+(venv)$ flask run --host=0.0.0.0
 ```
 
 By default, the application will be run on the port 5000. You can visit the application on ``http://127.0.0.1:5000``. 
+
+### Allow remote access from Internet
+
+To allow remote access from Internet
+
+```
+sudo ufw allow 5000
+```
 
 ## Deployment
 
