@@ -19,7 +19,7 @@ def login():
     if request.method == 'POST':
         if request.form['user']:
             session['user'] = request.form['user']
-            flash('You were logged in, '+session['user'])
+            flash('You were logged in, ' + session['user'])
             return redirect(url_for('paper_select.check'))
     return redirect(url_for('paper_select.index'))
 
@@ -52,25 +52,17 @@ def check():
         cur = db.execute(query)
         (current_author, author_count) = cur.fetchone()
         data['count'] = author_count
-        if session['user'] == 'Bin':
-            query = """
-                select id, title, authors, abstract, venue, year, doi, source from paper 
-                where id not in (select paper_id from remark where author = '%s') 
-                order by random() limit 1;
-            """ % (session['user'])
-        else:
-            query = """
-                select id, title, authors, abstract, venue, year, doi, source from paper 
-                where id not in (select paper_id from remark where author != 'Bin') 
-                order by random() limit 1;
-            """
+        query = """
+            select id, csv_id, title, authors, abstract, venue, year, doi, source from paper 
+            where id not in (select paper_id from remark) 
+            limit 1;
+        """
         cur = db.execute(query)
         paper = cur.fetchone()
         if paper is not None:
-            (id, title, authors, abstract, venue, year, doi, source) = paper
-            print(id, title)
-            data['paper'] = {'id': id, 'title': title, 'authors': authors, 'abstract': abstract, 'venue': venue,
-                             'year': year, 'doi': doi, 'source': source}
+            (id, csv_id, title, authors, abstract, venue, year, doi, source) = paper
+            print("Checking {} {}".format(id, title))
+            data['paper'] = {'id': id, 'csv_id': csv_id, 'title': title, 'authors': authors, 'abstract': abstract, 'venue': venue, 'year': year, 'doi': doi, 'source': source}
         else:
             data['paper'] = None
         return render_template('check.html', data=data)
@@ -83,7 +75,7 @@ def save_result():
     if request.method == 'POST':
         db = get_db()
         data = request.form.to_dict()
-        print(data)
+        # print(data)
 
         paper_id = data['paper_id']
         acceptance = int(data['selection'])
@@ -100,16 +92,14 @@ def save_result():
             exclusion_note_list.append(data['note_irrelevant'])
         if 'note_notpaper' in data:
             exclusion_note_list.append(data['note_notpaper'])
-        if 'note_notopinion' in data:
-            exclusion_note_list.append(data['note_notopinion'])
+        if 'note_notrelevant' in data:
+            exclusion_note_list.append(data['note_notrelevant'])
         if 'other_option' in data and data['other_option'] != '':
             exclusion_note_list.append(data['other_option'])
 
         exclusion_note = '|'.join(exclusion_note_list)
-        print(exclusion_note)
         insert = (paper_id, session['user'], acceptance, inclusion_note, exclusion_note)
-        db.execute('insert into remark (paper_id, author, acceptance, inclusion_note, exclusion_note) '
-                   'values (?, ?, ?, ?, ?)', insert)
+        db.execute('insert into remark (paper_id, author, acceptance, inclusion_note, exclusion_note) values (?, ?, ?, ?, ?)', insert)
         db.commit()
         return redirect(url_for('paper_select.check'))
     return redirect(url_for('paper_select.index'))

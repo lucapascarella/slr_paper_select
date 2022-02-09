@@ -18,10 +18,14 @@ def dump_with_filter(venues_path: str, csv_path: str):
                 if row["num_pages"] == "nan" or row["num_pages"] == "":  # or len(row["abstract"].split(" ")) < 10:
                     row["num_pages"] = 0
                 if int(row["num_pages"]) > 6 or int(row["num_pages"]) == 0:
+                    csv_id = row["\ufeff"]
+                    if row['doi'] == '':
+                        doi = row['url']
+                    else:
+                        doi = "https://doi.org/" + row['doi']
                     if row["cleaned_publication_venue"].strip() in venues:
                         db_papers.append(
-                            (row['title'], row['authors'], row['venue'], row['abstract'], row['year'], row['doi'],
-                             row['source']))
+                            (csv_id, row['title'], row['authors'], row['venue'], row['abstract'], row['year'], doi, row['source']))
                 # else:
                 #     print(row["\ufeffid"])
 
@@ -55,23 +59,20 @@ if __name__ == '__main__':
     conn = sqlite3.connect('instance/paper_select_1.sqlite')
     c = conn.cursor()
 
-    c.executemany('INSERT INTO paper(title, authors, venue, abstract, year, doi, source) VALUES (?,?,?,?,?,?,?)',
-                  db_1)
+    c.executemany('INSERT INTO paper(csv_id, title, authors, venue, abstract, year, doi, source) VALUES (?,?,?,?,?,?,?,?)', db_1)
     conn.commit()
     conn.close()
 
     conn = sqlite3.connect('instance/paper_select_2.sqlite')
     c = conn.cursor()
 
-    c.executemany('INSERT INTO paper(title, authors, venue, abstract, year, doi, source) VALUES (?,?,?,?,?,?,?)',
-                  db_2)
+    c.executemany('INSERT INTO paper(csv_id, title, authors, venue, abstract, year, doi, source) VALUES (?,?,?,?,?,?,?,?)', db_2)
     conn.commit()
     conn.close()
 
     conn = sqlite3.connect('instance/paper_select_3.sqlite')
     c = conn.cursor()
 
-    c.executemany('INSERT INTO paper(title, authors, venue, abstract, year, doi, source) VALUES (?,?,?,?,?,?,?)',
-                  db_3)
+    c.executemany('INSERT INTO paper(csv_id, title, authors, venue, abstract, year, doi, source) VALUES (?,?,?,?,?,?,?,?)', db_3)
     conn.commit()
     conn.close()

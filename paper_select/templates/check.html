@@ -49,11 +49,10 @@
 
       <p>
         <ul>
-      <li><b>IC1</b> The paper must be peer-reviewed and published at conferences, workshops, or journals; to only include papers which have undergone scrutiny by the scientific community.</li>
-      <li><b>IC2</b> The paper must be related to the automation of a software engineering task using deep learning.</li>
-      <li><b>EC1</b> The paper is not in English. Rationale: English is the primary language for published academic studies.</li>
-      <li><b>EC2</b> The paper is not a full research publication (e.g., abstract only submissions, doctoral symposium articles, presentations, tutorials, posters, forewords, etc.). Rationale: these artifacts are not subjected to the same peer-reviewing process as full research papers.
-</li>
+          <li><b>IC1</b> The paper must be peer-reviewed and published at conferences, workshops, or journals; to only include papers which have undergone scrutiny by the scientific community.</li>
+          <li><b>IC2</b> The paper must be related to the automation of a software engineering task using deep learning.</li>
+          <li><b>EC1</b> The paper is not in English. Rationale: English is the primary language for published academic studies.</li>
+          <li><b>EC2</b> The paper is not a full research publication (e.g., abstract only submissions, doctoral symposium articles, presentations, tutorials, posters, forewords, etc.). Rationale: these artifacts are not subjected to the same peer-reviewing process as full research papers.</li>
         </ul>
       </p>
 
@@ -61,6 +60,10 @@
             <table class="table table-hover">
               <thead>
               <tbody>
+                <tr>
+                  <th scope="row">CSV ID</th>
+                  <td>{{ data.paper.csv_id }} </td>
+                </tr>
                 <tr>
                   <th scope="row">Title</th>
                   <td>{{ data.paper.title }} </td>
@@ -92,7 +95,7 @@
                 {% if data.paper.doi %}
                 <tr>
                   <th scope="row">Link</th>
-                  <td><a href="https://doi.org/{{ data.paper.doi }}" target="_blank">https://doi.org/{{ data.paper.doi }}</a></td>
+                  <td><a href="{{ data.paper.doi }}" target="_blank">{{ data.paper.doi }}</a></td>
                 </tr>
                 {% endif %}
 {#                {% if data.paper.source %}#}
@@ -126,7 +129,7 @@
             </div>
             <div class="form-check">
               <label class="form-check-label">
-                <input type="checkbox" class="form-check-input" name="note_notopinion" value="Not related to opinion mining">Not related to opinion mining
+                <input type="checkbox" class="form-check-input" name="note_notrelevant" value="Not related to opinion mining">Not related to the use of DL for automating SE tasks
               </label>
             </div>
             <div class="form-check">

@@ -3,6 +3,7 @@ DROP TABLE IF EXISTS remark;
 
 CREATE TABLE paper (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  csv_id TEXT,
   title TEXT NOT NULL,
   authors TEXT,
   abstract TEXT,
