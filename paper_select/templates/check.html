@@ -46,6 +46,17 @@
 <div class="jumbotron jumbotron-fluid sentence">
   <div class="container">
         <p class="lead">Hi {{ session.user }}, you're going to check if the following paper falls into our selection criteria.</p>
+
+      <p>
+        <ul>
+      <li><b>IC1</b> The paper must be peer-reviewed and published at conferences, workshops, or journals; to only include papers which have undergone scrutiny by the scientific community.</li>
+      <li><b>IC2</b> The paper must be related to the automation of a software engineering task using deep learning.</li>
+      <li><b>EC1</b> The paper is not in English. Rationale: English is the primary language for published academic studies.</li>
+      <li><b>EC2</b> The paper is not a full research publication (e.g., abstract only submissions, doctoral symposium articles, presentations, tutorials, posters, forewords, etc.). Rationale: these artifacts are not subjected to the same peer-reviewing process as full research papers.
+</li>
+        </ul>
+      </p>
+
         <p class="paper_text">
             <table class="table table-hover">
               <thead>
@@ -72,24 +83,24 @@
                   <td>{{ data.paper.venue }}</td>
                 </tr>
                 {% endif %}
-                {% if data.paper.year %}
-                <tr>
-                  <th scope="row">Year</th>
-                  <td>{{ data.paper.year }}</td>
-                </tr>
-                {% endif %}
+{#                {% if data.paper.year %}#}
+{#                <tr>#}
+{#                  <th scope="row">Year</th>#}
+{#                  <td>{{ data.paper.year }}</td>#}
+{#                </tr>#}
+{#                {% endif %}#}
                 {% if data.paper.doi %}
                 <tr>
                   <th scope="row">Link</th>
                   <td><a href="https://doi.org/{{ data.paper.doi }}" target="_blank">https://doi.org/{{ data.paper.doi }}</a></td>
                 </tr>
                 {% endif %}
-                {% if data.paper.source %}
-                <tr>
-                  <th scope="row">Source</th>
-                  <td>{{ data.paper.source }}</td>
-                </tr>
-                {% endif %}
+{#                {% if data.paper.source %}#}
+{#                <tr>#}
+{#                  <th scope="row">Source</th>#}
+{#                  <td>{{ data.paper.source }}</td>#}
+{#                </tr>#}
+{#                {% endif %}#}
               </tbody>
             </table>
   </div>
@@ -102,7 +113,7 @@
             <p class="lead">In case you decide to include this paper, but it does not fit in our inclusion criteria, please state the reason:</p>
             <textarea class="form-control" rows="3" id="inclusion_note" name="inclusion_note" placeholder="(option)"></textarea>
             <br>
-            <p class="lead">In case you decide to discard this paper, please choose the reason:</p>
+            <p class="lead">In case you decide to not include this paper, please choose the reason:</p>
             <div class="form-check">
               <label class="form-check-label">
                 <input type="checkbox" class="form-check-input" name="note_irrelevant" value="Not relevant to software engineering">Not relevant to software engineering
@@ -126,10 +137,9 @@
             </div>
             <br>
             <input type="hidden" name="paper_id" value="{{ data.paper.id }}">
-            <button type="submit" class="btn btn-success paper_select" name="selection" value="1">Include in SLR</button>
-            <button type="submit" class="btn btn-warning paper_select" name="selection" value="2">Secondary Study</button>
-            <button type="submit" class="btn btn-danger paper_select" name="selection" value="0">Discard</button>
-            <button type="submit" class="btn btn-secondary paper_select" name="selection" value="3">Skip</button>
+            <button type="submit" class="btn btn-success paper_select" name="selection" value="1">Include in our study</button>
+            <button type="submit" class="btn btn-danger paper_select" name="selection" value="0">Exclude from our study</button>
+{#            <button type="submit" class="btn btn-secondary paper_select" name="selection" value="3">Skip</button>#}
         </form>
   </div>
 </div>
