@@ -88,12 +88,14 @@ def save_result():
         else:
             inclusion_note = ''
 
-        if 'note_irrelevant' in data:
-            exclusion_note_list.append(data['note_irrelevant'])
-        if 'note_notpaper' in data:
-            exclusion_note_list.append(data['note_notpaper'])
-        if 'note_notrelevant' in data:
-            exclusion_note_list.append(data['note_notrelevant'])
+        if 'note_not_full' in data:
+            exclusion_note_list.append(data['note_not_full'])
+        if 'note_not_related' in data:
+            exclusion_note_list.append(data['note_not_related'])
+        if 'note_talks_pretrained_models' in data:
+            exclusion_note_list.append(data['note_talks_pretrained_models'])
+        if 'note_talks_word_embeddings' in data:
+            exclusion_note_list.append(data['note_talks_word_embeddings'])
         if 'other_option' in data and data['other_option'] != '':
             exclusion_note_list.append(data['other_option'])
 
